@@ -23,6 +23,6 @@ public class StudentController {
 
     @GetMapping
     public ResponseEntity<String> getStudent() {
-        return ResponseEntity.ok(studentService.getStudent());
+        return ResponseEntity.ok(studentService.getStudent("All Student Data"));
     }
 }

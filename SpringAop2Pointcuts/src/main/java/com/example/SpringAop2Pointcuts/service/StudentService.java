@@ -12,9 +12,7 @@ public class StudentService {
         return student;
     }
 
-    public String getStudent() {
-
-        String s = "All Student Data";
+    public String getStudent(String s) {
         System.out.println(s);
         return s;
     }
