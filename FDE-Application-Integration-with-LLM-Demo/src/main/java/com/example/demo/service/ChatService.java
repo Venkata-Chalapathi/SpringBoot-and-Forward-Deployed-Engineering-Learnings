@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.aitools.CalculatorTool;
+import com.example.demo.aitools.CurrencyExchangeTool;
+import com.example.demo.aitools.WeatherTool;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
@@ -17,34 +19,32 @@ public class ChatService {
 
     private CalculatorTool calculatorTool;
 
+    private WeatherTool weatherTool;
+
+    private CurrencyExchangeTool currencyExchangeTool;
+
     private List<Message> history = new ArrayList();
 
-    private final String SYSTEM_PROMPT = """
-            You are a helpful AI assistant that performs arithmetic
-            calculations using the available calculate tool.
-        
-            Supported operations:
-            - add: Addition
-            - subtract: Subtraction
-            - multiply: Multiplication
-            - divide: Division
-            - mod: Modulus
-            - power: Exponentiation
-        
-            Instructions:
-            1. Understand the user's mathematical query.
-            2. Use the calculate tool whenever a calculation is required.
-            3. Identify the correct operation and pass the appropriate
-               values to the tool.
-            4. Present the result clearly and accurately.
-            5. If the user attempts division by zero or an invalid
-               operation, explain the issue politely.
-            6. Respond in simple, understandable language.
+    private static final String SYSTEM_PROMPT = """
+        You are a helpful AI assistant with access to external tools.
+    
+        Follow these rules:
+        1. For arithmetic calculations, ALWAYS use the calculator tool.
+        2. For current weather, ALWAYS use the currentWeather tool.
+        3. For currency conversion or exchange rates, ALWAYS use the CurrencyExchangeTool
+        4. You may call multiple tools when solving a multi-step request.
+        5. After receiving tool results, explain the answer naturally.
+        6. Never invent current weather or exchange-rate information.
         """;
 
-    public ChatService(ChatClient.Builder builder, CalculatorTool calculatorTool ){
+    public ChatService(ChatClient.Builder builder,
+                       CalculatorTool calculatorTool,
+                       WeatherTool weatherTool,
+                       CurrencyExchangeTool currencyExchangeTool){
         this.chatClient = builder.build();
         this.calculatorTool = calculatorTool;
+        this.weatherTool = weatherTool;
+        this.currencyExchangeTool = currencyExchangeTool;
     }
 
     public String chat(String message){
@@ -56,7 +56,7 @@ public class ChatService {
         String output = chatClient.prompt()
                 .system(SYSTEM_PROMPT)
                 .messages(history)
-                .tools(calculatorTool)
+                .tools(calculatorTool, weatherTool, currencyExchangeTool)
                 .call()
                 .content();
 
