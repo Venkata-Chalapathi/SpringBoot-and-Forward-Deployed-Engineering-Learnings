@@ -4,8 +4,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
-@Component
-@Aspect
+//@Component
+//@Aspect
 public class LoggingAspect {
 
 //    @Pointcut("execution( * com.example.SpringAop2Pointcuts.service.StudentService.*(..) )")
