@@ -11,7 +11,10 @@ public class Main {
 
         StudentRepository studentRepository = new StudentRepository();
 
-        studentRepository.createStudent();
+//        studentRepository.createStudent();
+//        studentRepository.updateStudent();
+//        studentRepository.deleteStudent();
+        studentRepository.getStudentById();
 
     }
 }
