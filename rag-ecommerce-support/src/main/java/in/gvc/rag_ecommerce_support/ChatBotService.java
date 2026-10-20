@@ -52,8 +52,13 @@ public class ChatBotService {
                 SearchRequest.builder()
                         .query(question)
                         .topK(4)
+                        .similarityThreshold(0.75)
                         .build()
         );
+
+        if (relevantChunks.isEmpty()){
+            return "I couldn't found relevant info";
+        }
 
         StringBuilder context = new StringBuilder();
 
