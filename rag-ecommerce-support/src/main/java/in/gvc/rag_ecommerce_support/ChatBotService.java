@@ -53,6 +53,9 @@ public class ChatBotService {
                         .query(question)
                         .topK(4)
                         .similarityThreshold(0.75)
+                        .filterExpression(
+                                String.valueOf("category" == "electronics")
+                        )
                         .build()
         );
 
